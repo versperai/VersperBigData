@@ -127,12 +127,18 @@ class HiveData:
         }
         self.echart6_data = {
             'title': '销量Top10类目',
+            'xAxis': ['cat_1464116', 'cat_2735466', 'cat_2885642', 'cat_4145813', 'cat_4756105', 'cat_4801426', 'cat_982926', 'cat_2640118', 'cat_4159072', 'cat_1320293'],
             'data': [
-                {'name': 'cat_1464116', 'value': 34248, 'value2': 10000, 'color': '01', 'radius': ['59%', '70%']},
-                {'name': 'cat_2735466', 'value': 33426, 'value2': 10000, 'color': '02', 'radius': ['49%', '60%']},
-                {'name': 'cat_2885642', 'value': 31619, 'value2': 10000, 'color': '03', 'radius': ['39%', '50%']},
-                {'name': 'cat_4145813', 'value': 31418, 'value2': 10000, 'color': '04', 'radius': ['29%', '40%']},
-                {'name': 'cat_4756105', 'value': 28021, 'value2': 10000, 'color': '05', 'radius': ['19%', '30%']},
+                {'name': 'cat_1464116', 'value': 34248},
+                {'name': 'cat_2735466', 'value': 33426},
+                {'name': 'cat_2885642', 'value': 31619},
+                {'name': 'cat_4145813', 'value': 31418},
+                {'name': 'cat_4756105', 'value': 28021},
+                {'name': 'cat_4801426', 'value': 26258},
+                {'name': 'cat_982926', 'value': 24570},
+                {'name': 'cat_2640118', 'value': 18116},
+                {'name': 'cat_4159072', 'value': 17917},
+                {'name': 'cat_1320293', 'value': 16948},
             ]
         }
         self.map_1_data = {'symbolSize': 100, 'data': []}
@@ -168,7 +174,7 @@ class HiveData:
 
     @property
     def echart6(self):
-        return {'title': self.echart6_data['title'], 'xAxis': [i['name'] for i in self.echart6_data['data']], 'data': self.echart6_data['data']}
+        return {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'data': self.echart6_data['data'], 'series': [i['value'] for i in self.echart6_data['data']]}
 
     @property
     def map_1(self):
@@ -187,7 +193,7 @@ class HiveData:
             'echarts3_3': self.echarts3_3_data,
             'echart4': self.echart4_data,
             'echart5': self.echart5_data,
-            'echart6': self.echart6_data,
+            'echart6': {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'data': self.echart6_data['data'], 'series': [i['value'] for i in self.echart6_data['data']]},
             'map_1': self.map_1_data,
             'chart_conversion': self.chart_conversion,
         }
