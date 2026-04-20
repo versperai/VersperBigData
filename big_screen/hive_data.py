@@ -27,7 +27,7 @@ def add_random(obj, factor=0.05):
     if obj.counter2 and 'value' in obj.counter2:
         obj.counter2['value'] = rand_num(obj.counter2['value'])
     
-    for key in ['echart1_data', 'echart2_data', 'echart4_data', 'echart5_data']:
+    for key in ['echart1_data', 'echart2_data', 'echart4_data']:
         data = getattr(obj, key, None)
         if data and data.get('data'):
             for item in data['data']:
@@ -174,7 +174,7 @@ class HiveData:
 
     @property
     def echart6(self):
-        return {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'data': self.echart6_data['data'], 'series': [i['value'] for i in self.echart6_data['data']]}
+        return {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'series': [i['value'] for i in self.echart6_data['data']]}
 
     @property
     def map_1(self):
@@ -192,8 +192,8 @@ class HiveData:
             'echarts3_2': self.echarts3_2_data,
             'echarts3_3': self.echarts3_3_data,
             'echart4': self.echart4_data,
-            'echart5': self.echart5_data,
-            'echart6': {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'data': self.echart6_data['data'], 'series': [i['value'] for i in self.echart6_data['data']]},
+            'echart5': {'title': self.echart5_data['title'], 'xAxis': [i['name'] for i in self.echart5_data['data']], 'series': [i['value'] for i in self.echart5_data['data']]},
+            'echart6': {'title': self.echart6_data['title'], 'xAxis': self.echart6_data['xAxis'], 'series': [i['value'] for i in self.echart6_data['data']]},
             'map_1': self.map_1_data,
             'chart_conversion': self.chart_conversion,
         }
