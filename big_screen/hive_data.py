@@ -112,7 +112,7 @@ class HiveData:
     @property
     def echart2(self):
         series_data = [i['value'] for i in self.echart2_data['data']]
-        return {'xAxis': [str(i) for i in range(24)], 'series': series_data[0] if series_data else []}
+        return {'title': self.echart2_data['title'], 'xAxis': [str(i) for i in range(24)], 'series': series_data[0] if series_data else []}
 
     @property
     def echarts3_1(self):
