@@ -27,7 +27,7 @@ def add_random(obj, factor=0.05):
     if obj.counter2 and 'value' in obj.counter2:
         obj.counter2['value'] = rand_num(obj.counter2['value'])
     
-    for key in ['echart1_data', 'echart2_data', 'echart4_data']:
+    for key in ['echart1_data', 'echart2_data', 'echart4_data', 'echarts3_1_data']:
         data = getattr(obj, key, None)
         if data and data.get('data'):
             for item in data['data']:
@@ -188,7 +188,7 @@ class HiveData:
             'counter3': self.counter3,
             'echart1': {'title': self.echart1_data['title'], 'xAxis': [i['name'] for i in self.echart1_data['data']], 'series': [i['value'] for i in self.echart1_data['data']]},
             'echart2': {'title': self.echart2_data['title'], 'xAxis': self.echart2_data['xAxis'], 'data': self.echart2_data['data'], 'series': self.echart2_data['data'][0]['value']},
-            'echarts3_1': self.echarts3_1_data,
+            'echarts3_1': {'title': self.echarts3_1_data['title'], 'xAxis': self.echarts3_1_data['xAxis'], 'data': [d['value'] for d in self.echarts3_1_data['data']]},
             'echarts3_2': self.echarts3_2_data,
             'echarts3_3': self.echarts3_3_data,
             'echart4': self.echart4_data,
