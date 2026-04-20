@@ -111,7 +111,8 @@ class HiveData:
 
     @property
     def echart2(self):
-        return {'title': self.echart2_data['title'], 'xAxis': [str(i) for i in range(24)], 'series': self.echart2_data['data'][0]['value']}
+        series_data = [i['value'] for i in self.echart2_data['data']]
+        return {'xAxis': [str(i) for i in range(24)], 'series': series_data[0] if series_data else []}
 
     @property
     def echarts3_1(self):
@@ -148,7 +149,7 @@ class HiveData:
             'counter2': self.counter2,
             'counter3': self.counter3,
             'echart1': {'title': self.echart1_data['title'], 'xAxis': [i['name'] for i in self.echart1_data['data']], 'series': [i['value'] for i in self.echart1_data['data']]},
-            'echart2': self.echart2_data,
+            'echart2': {'title': self.echart2_data['title'], 'xAxis': self.echart2_data['xAxis'], 'data': self.echart2_data['data'], 'series': self.echart2_data['data'][0]['value']},
             'echarts3_1': self.echarts3_1_data,
             'echarts3_2': self.echarts3_2_data,
             'echarts3_3': self.echarts3_3_data,
