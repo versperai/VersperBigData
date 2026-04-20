@@ -20,7 +20,7 @@ fields terminated by ','
 lines terminated by '\n';
 
 -- 加载数据
-LOAD DATA LOCAL INPATH '/home/getway/UserBehavior.csv'
+LOAD DATA LOCAL INPATH '/tmp/UserBehavior.csv'
 OVERWRITE INTO TABLE user_behavior ;
 
 --查看数据
@@ -28,13 +28,13 @@ select * from user_behavior limit 10;
 
 --数据清洗，去掉完全重复的数据
 insert overwrite table user_behavior
-select user_id, item_id, category_id, behavior_type, timestamp, datetime
+select user_id, item_id, category_id, behavior_type, `timestamp`, datetime
 from user_behavior
-group by user_id, item_id, category_id, behavior_type, timestamp, datetime;
+group by user_id, item_id, category_id, behavior_type, `timestamp`, datetime;
 
 --数据清洗，时间戳格式化成 datetime
 insert overwrite table user_behavior
-select user_id, item_id, category_id, behavior_type, timestamp, from_unixtime(timestamp, 'yyyy-MM-dd HH:mm:ss')
+select user_id, item_id, category_id, behavior_type, `timestamp`, from_unixtime(`timestamp`, 'yyyy-MM-dd HH:mm:ss')
 from user_behavior;
 
 --查看时间是否有异常值
@@ -42,7 +42,7 @@ select date(datetime) as day from user_behavior group by date(datetime) order by
 
 --数据清洗，去掉时间异常的数据
 insert overwrite table user_behavior
-select user_id, item_id, category_id, behavior_type, timestamp, datetime
+select user_id, item_id, category_id, behavior_type, `timestamp`, datetime
 from user_behavior
 where cast(datetime as date) between '2017-11-25' and '2017-12-03';
 
