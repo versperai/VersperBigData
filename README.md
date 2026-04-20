@@ -121,6 +121,11 @@ docker exec hiveserver2 beeline -u jdbc:hive2://localhost:10000 -e "select count
 <table align="center">
   <tr>
     <td><img src="assets/query_hive_1"></td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
     <td><img src="assets/query_hive_2"></td>
   </tr>
 </table>
