@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    data = SourceData()
+    data = HiveData()
     return render_template('index.html', form=data, title=data.title)
 
 
@@ -34,10 +34,9 @@ def job():
 @app.route('/api/data')
 def api_data():
     """
-    返回 SourceData 的 JSON 数据
+    返回 HiveData 的 JSON 数据
     """
-    # data = SourceData()
-    data = get_accumulated_data('data', SourceData)  # 模拟实时数据增长
+    data = HiveData()
     return jsonify(data.to_dict())
 
 @app.route('/api/corp')
@@ -62,8 +61,7 @@ def api_job():
 
 @app.route('/api/hive')
 def api_hive():
-    data = HiveData()
-    return jsonify(data.to_dict())
+    return jsonify(HiveData().to_dict())
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=False)

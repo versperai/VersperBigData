@@ -110,6 +110,42 @@ class HiveData:
         }
         self.map_1_data = {'symbolSize': 100, 'data': []}
 
+    @property
+    def echart1(self):
+        return {'title': self.echart1_data['title'], 'xAxis': [i['name'] for i in self.echart1_data['data']], 'series': [i['value'] for i in self.echart1_data['data']]}
+
+    @property
+    def echart2(self):
+        return {'title': self.echart2_data['title'], 'xAxis': self.echart2_data['xAxis'], 'names': [i['name'] for i in self.echart2_data['data']], 'data': self.echart2_data['data']}
+
+    @property
+    def echarts3_1(self):
+        return {'title': self.echarts3_1_data['title'], 'xAxis': self.echarts3_1_data['xAxis'], 'data': self.echarts3_1_data['data']}
+
+    @property
+    def echarts3_2(self):
+        return {'title': self.echarts3_2_data['title'], 'xAxis': [i['name'] for i in self.echarts3_2_data['data']], 'data': self.echarts3_2_data['data']}
+
+    @property
+    def echarts3_3(self):
+        return self.echarts3_3_data
+
+    @property
+    def echart4(self):
+        return {'title': self.echart4_data['title'], 'xAxis': self.echart4_data['xAxis'], 'names': [i['name'] for i in self.echart4_data['data']], 'data': self.echart4_data['data']}
+
+    @property
+    def echart5(self):
+        return {'title': self.echart5_data['title'], 'xAxis': [i['name'] for i in self.echart5_data['data']], 'series': [i['value'] for i in self.echart5_data['data']]}
+
+    @property
+    def echart6(self):
+        return {'title': self.echart6_data['title'], 'xAxis': [i['name'] for i in self.echart6_data['data']], 'data': self.echart6_data['data']}
+
+    @property
+    def map_1(self):
+        return {'symbolSize': self.map_1_data['symbolSize'], 'data': self.map_1_data['data']}
+
     def to_dict(self):
         return {
             'title': self.title,
