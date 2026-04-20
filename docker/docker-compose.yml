@@ -1,52 +1,40 @@
 services:
 
   namenode:
-    image: docker.m.daocloud.io/apache/hadoop:3
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     container_name: namenode
     hostname: namenode
-    restart: unless-stopped
+    restart: always
     environment:
+      CLUSTER_NAME: hadoop
       CORE_CONF_fs_defaultFS: hdfs://namenode:9000
     ports:
       - "9870:9870"
       - "9001:9000"
     volumes:
       - ./data/namenode:/hadoop/dfs/name
-    command: >
-      bash -c "
-      mkdir -p /hadoop/dfs/name &&
-      if [ ! -d /hadoop/dfs/name/current ]; then
-        hdfs namenode -format -force -nonInteractive;
-      fi &&
-      hdfs namenode
-      "
     networks:
       - hive-net
 
   datanode:
-    image: docker.m.daocloud.io/apache/hadoop:3
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode
     hostname: datanode
-    restart: unless-stopped
+    restart: always
     depends_on:
       - namenode
     environment:
+      SERVICE_PRECONDITION: namenode:9870
       CORE_CONF_fs_defaultFS: hdfs://namenode:9000
     volumes:
       - ./data/datanode:/hadoop/dfs/data
-    command: >
-      bash -c "
-      mkdir -p /hadoop/dfs/data &&
-      hdfs datanode
-      "
     networks:
       - hive-net
 
   metastore:
     image: docker.m.daocloud.io/apache/hive:4.1.0
     container_name: metastore
-    hostname: metastore
-    restart: unless-stopped
+    restart: always
     depends_on:
       - namenode
       - datanode
@@ -54,20 +42,19 @@ services:
       SERVICE_NAME: metastore
       DB_DRIVER: derby
       SERVICE_OPTS: >
-        -Dhive.metastore.warehouse.dir=/opt/hive/data/warehouse
+        -Dhive.metastore.warehouse.dir=/warehouse
         -Dfs.defaultFS=hdfs://namenode:9000
     ports:
       - "9083:9083"
     volumes:
-      - ./data/warehouse:/opt/hive/data/warehouse
+      - ./data/warehouse:/warehouse
     networks:
       - hive-net
 
   hiveserver2:
     image: docker.m.daocloud.io/apache/hive:4.1.0
     container_name: hiveserver2
-    hostname: hiveserver2
-    restart: unless-stopped
+    restart: always
     depends_on:
       - metastore
     environment:
@@ -76,13 +63,13 @@ services:
       SERVICE_OPTS: >
         -Dhive.metastore.uris=thrift://metastore:9083
         -Dhive.server2.thrift.port=10000
-        -Dhive.metastore.warehouse.dir=/opt/hive/data/warehouse
+        -Dhive.metastore.warehouse.dir=/warehouse
         -Dfs.defaultFS=hdfs://namenode:9000
     ports:
       - "10000:10000"
       - "10002:10002"
     volumes:
-      - ./data/warehouse:/opt/hive/data/warehouse
+      - ./data/warehouse:/warehouse
     networks:
       - hive-net
 

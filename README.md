@@ -40,6 +40,33 @@ docker compose up -d
 docker compose ps
 ```
 
+### Start
+
+```bash
+  mkdir -p ./data/namenode ./data/datanode ./data/warehouse
+  ls data/
+ datanode   namenode   warehouse
+  docker compose up -d
+[+] up 5/5
+ ✔ Network docker_hive-net Created                                                                                                                                                                                                                                              0.0s
+ ✔ Container namenode      Started                                                                                                                                                                                                                                              0.4s
+ ✔ Container datanode      Started                                                                                                                                                                                                                                              0.5s
+ ✔ Container metastore     Started                                                                                                                                                                                                                                              0.5s
+ ✔ Container hiveserver2   Started                                                                                                                                                                                                                                              0.6s
+  docker compose ps
+NAME          IMAGE                                             COMMAND                  SERVICE       CREATED          STATUS                             PORTS
+datanode      bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   datanode      14 seconds ago   Up 13 seconds (health: starting)   9864/tcp
+hiveserver2   docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   hiveserver2   14 seconds ago   Up 13 seconds                      0.0.0.0:10000->10000/tcp, [::]:10000->10000/tcp, 9083/tcp, 0.0.0.0:10002->10002/tcp, [::]:10002->10002/tcp
+metastore     docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   metastore     14 seconds ago   Up 13 seconds                      10000/tcp, 0.0.0.0:9083->9083/tcp, [::]:9083->9083/tcp, 10002/tcp
+namenode      bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   namenode      14 seconds ago   Up 13 seconds (health: starting)   0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp, 0.0.0.0:9001->9000/tcp, [::]:9001->9000/tcp
+  docker compose ps
+NAME          IMAGE                                             COMMAND                  SERVICE       CREATED              STATUS                        PORTS
+datanode      bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   datanode      About a minute ago   Up About a minute (healthy)   9864/tcp
+hiveserver2   docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   hiveserver2   About a minute ago   Up About a minute             0.0.0.0:10000->10000/tcp, [::]:10000->10000/tcp, 9083/tcp, 0.0.0.0:10002->10002/tcp, [::]:10002->10002/tcp
+metastore     docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   metastore     About a minute ago   Up About a minute             10000/tcp, 0.0.0.0:9083->9083/tcp, [::]:9083->9083/tcp, 10002/tcp
+namenode      bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   namenode      About a minute ago   Up About a minute (healthy)   0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp, 0.0.0.0:9001->9000/tcp, [::]:9001->9000/tcp
+```
+
 ## wish
 
 采用不同的技术栈，通过对不同行业的数据集进行分析，期望达到以下目的：
