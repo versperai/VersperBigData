@@ -96,16 +96,11 @@ class HiveData:
         self.echart6_data = {
             'title': '销量Top10类目',
             'data': [
-                {'name': 'cat_1464116', 'value': 34248},
-                {'name': 'cat_2735466', 'value': 33426},
-                {'name': 'cat_2885642', 'value': 31619},
-                {'name': 'cat_4145813', 'value': 31418},
-                {'name': 'cat_4756105', 'value': 28021},
-                {'name': 'cat_4801426', 'value': 26258},
-                {'name': 'cat_982926', 'value': 24570},
-                {'name': 'cat_2640118', 'value': 18116},
-                {'name': 'cat_4159072', 'value': 17917},
-                {'name': 'cat_1320293', 'value': 16948},
+                {'name': 'cat_1464116', 'value': 34248, 'value2': 10000, 'color': '01', 'radius': ['59%', '70%']},
+                {'name': 'cat_2735466', 'value': 33426, 'value2': 10000, 'color': '02', 'radius': ['49%', '60%']},
+                {'name': 'cat_2885642', 'value': 31619, 'value2': 10000, 'color': '03', 'radius': ['39%', '50%']},
+                {'name': 'cat_4145813', 'value': 31418, 'value2': 10000, 'color': '04', 'radius': ['29%', '40%']},
+                {'name': 'cat_4756105', 'value': 28021, 'value2': 10000, 'color': '05', 'radius': ['19%', '30%']},
             ]
         }
         self.map_1_data = {'symbolSize': 100, 'data': []}
@@ -116,7 +111,7 @@ class HiveData:
 
     @property
     def echart2(self):
-        return {'title': self.echart2_data['title'], 'xAxis': self.echart2_data['xAxis'], 'names': [i['name'] for i in self.echart2_data['data']], 'data': self.echart2_data['data']}
+        return {'title': self.echart2_data['title'], 'xAxis': [str(i) for i in range(24)], 'series': self.echart2_data['data'][0]['value']}
 
     @property
     def echarts3_1(self):
