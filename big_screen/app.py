@@ -8,6 +8,7 @@
 from flask import Flask, render_template, jsonify
 from data import SourceData, CorpData, JobData
 from data_fake import get_accumulated_data
+from hive_data import HiveData
 
 app = Flask(__name__)
 
@@ -58,6 +59,11 @@ def api_job():
     data = get_accumulated_data('job', JobData)  # 模拟实时数据增长
     return jsonify(data.to_dict())
 
+
+@app.route('/api/hive')
+def api_hive():
+    data = HiveData()
+    return jsonify(data.to_dict())
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=False)

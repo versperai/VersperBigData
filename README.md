@@ -154,3 +154,10 @@ select user_id, item_id, category_id, behavior_type, `timestamp`, datetime
 from user_behavior
 where cast(datetime as date) between '2017-11-25' and '2017-12-03';
 ```
+
+## 6. API Json
+
+```bash
+cd big_screen && uv python app.py
+firefox http://127.0.0.1:5000/api/hive
+```
