@@ -1,6 +1,45 @@
 # bigdata_analyse
 该 repo 是本人实践过的数据分析项目集合，每个项目都会包含一个友好的说明文档，用来阐述和展示整个开发流程，同时也会提供相关的数据集，以供下载练习。
 
+## Docker Settings
+
+### Mirror
+
+```bash
+sudo vim /etc/docker/daemon.json
+
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.1panel.live/",
+    "https://1ms.run/",
+    "https://docker.xuanyuan.me/",
+    "https://dev.xuanyuan.dev/",
+    "https://dytt.online/",
+    "https://docker.zyjs8.com/",
+    "https://lispy.org/",
+    "https://docker-0.unsee.tech/",
+    "https://gh.123822.xyz",
+    "https://docker.m.daocloud.io",
+    "https://dockerproxy.net",
+    "https://demo.52013120.xyz",
+    "https://proxy.vvvv.ee",
+    "https://xdark.top/",
+    "https://registry.cyou/",
+    "https://mirror.ccs.tencentyun.com"
+  ]
+}
+# image add docker.m.daocloud.io in docker-compose.yml
+```
+
+```bash
+# docker compose down -v
+# docker logs namenode --tail 100
+# docker logs datanode --tail 100
+docker compose up -d
+docker compose ps
+```
+
 ## wish
 
 采用不同的技术栈，通过对不同行业的数据集进行分析，期望达到以下目的：
