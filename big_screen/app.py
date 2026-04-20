@@ -10,6 +10,17 @@ from data import SourceData, CorpData, JobData
 from data_fake import get_accumulated_data
 from hive_data import HiveData
 
+_hive_data_cache = None
+
+def get_hive_data():
+    global _hive_data_cache
+    if _hive_data_cache is None:
+        _hive_data_cache = HiveData()
+    else:
+        from hive_data import add_random
+        add_random(_hive_data_cache)
+    return _hive_data_cache
+
 app = Flask(__name__)
 
 
@@ -34,9 +45,9 @@ def job():
 @app.route('/api/data')
 def api_data():
     """
-    返回 HiveData 的 JSON 数据
+    返回 HiveData 的 JSON 数据（带动态变化）
     """
-    data = HiveData()
+    data = get_hive_data()
     return jsonify(data.to_dict())
 
 @app.route('/api/corp')

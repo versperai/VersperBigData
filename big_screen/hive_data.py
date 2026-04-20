@@ -1,8 +1,40 @@
 #!/usr/bin/env python3
+import copy
+import random
 from pyhive import hive
 
 def get_hive_connection():
     return hive.Connection(host='localhost', port=10000, database='default')
+
+_data_cache = None
+
+def get_hive_data():
+    global _data_cache
+    if _data_cache is None:
+        _data_cache = HiveData()
+    else:
+        add_random(_data_cache)
+    return _data_cache
+
+def add_random(obj, factor=0.05):
+    """给指标增加随机变化"""
+    def rand_num(v):
+        new_v = v * (1 + random.uniform(-factor, factor))
+        return max(0, int(new_v))
+    
+    if obj.counter and 'value' in obj.counter:
+        obj.counter['value'] = rand_num(obj.counter['value'])
+    if obj.counter2 and 'value' in obj.counter2:
+        obj.counter2['value'] = rand_num(obj.counter2['value'])
+    
+    for key in ['echart1_data', 'echart2_data', 'echart4_data', 'echart5_data']:
+        data = getattr(obj, key, None)
+        if data and data.get('data'):
+            for item in data['data']:
+                if 'value' in item and isinstance(item['value'], list):
+                    item['value'] = [rand_num(x) for x in item['value']]
+                elif 'value' in item and isinstance(item['value'], (int, float)):
+                    item['value'] = rand_num(item['value'])
 
 class HiveData:
     def __init__(self):
