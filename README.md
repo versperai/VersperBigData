@@ -1,9 +1,6 @@
-# bigdata_analyse
-该 repo 是本人实践过的数据分析项目集合，每个项目都会包含一个友好的说明文档，用来阐述和展示整个开发流程，同时也会提供相关的数据集，以供下载练习。
+# Docker Settings
 
-## Docker Settings
-
-### Mirror
+## Mirror
 
 ```bash
 sudo vim /etc/docker/daemon.json
@@ -40,26 +37,28 @@ docker compose up -d
 docker compose ps
 ```
 
-### Start
+## Start
 
 ```bash
-  mkdir -p ./data/namenode ./data/datanode ./data/warehouse
-  ls data/
- datanode   namenode   warehouse
-  docker compose up -d
+mkdir -p ./data/namenode ./data/datanode ./data/warehouse
+ls data/
+datanode  namenode  warehouse
+docker compose up -d
 [+] up 5/5
  ✔ Network docker_hive-net Created                                                                                                                                                                                                                                              0.0s
  ✔ Container namenode      Started                                                                                                                                                                                                                                              0.4s
  ✔ Container datanode      Started                                                                                                                                                                                                                                              0.5s
  ✔ Container metastore     Started                                                                                                                                                                                                                                              0.5s
  ✔ Container hiveserver2   Started                                                                                                                                                                                                                                              0.6s
-  docker compose ps
+docker compose ps
 NAME          IMAGE                                             COMMAND                  SERVICE       CREATED          STATUS                             PORTS
 datanode      bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   datanode      14 seconds ago   Up 13 seconds (health: starting)   9864/tcp
 hiveserver2   docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   hiveserver2   14 seconds ago   Up 13 seconds                      0.0.0.0:10000->10000/tcp, [::]:10000->10000/tcp, 9083/tcp, 0.0.0.0:10002->10002/tcp, [::]:10002->10002/tcp
 metastore     docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   metastore     14 seconds ago   Up 13 seconds                      10000/tcp, 0.0.0.0:9083->9083/tcp, [::]:9083->9083/tcp, 10002/tcp
 namenode      bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   namenode      14 seconds ago   Up 13 seconds (health: starting)   0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp, 0.0.0.0:9001->9000/tcp, [::]:9001->9000/tcp
-  docker compose ps
+
+# wait namenode and datanode are ok
+docker compose ps
 NAME          IMAGE                                             COMMAND                  SERVICE       CREATED              STATUS                        PORTS
 datanode      bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   datanode      About a minute ago   Up About a minute (healthy)   9864/tcp
 hiveserver2   docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoint.sh"   hiveserver2   About a minute ago   Up About a minute             0.0.0.0:10000->10000/tcp, [::]:10000->10000/tcp, 9083/tcp, 0.0.0.0:10002->10002/tcp, [::]:10002->10002/tcp
@@ -67,38 +66,61 @@ metastore     docker.m.daocloud.io/apache/hive:4.1.0            "sh -c /entrypoi
 namenode      bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   namenode      About a minute ago   Up About a minute (healthy)   0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp, 0.0.0.0:9001->9000/tcp, [::]:9001->9000/tcp
 ```
 
-## wish
+## Hive Sql
 
-采用不同的技术栈，通过对不同行业的数据集进行分析，期望达到以下目的：
+```bash
+docker exec -it hiveserver2 bash
+bash-5.1$ beeline -u jdbc:hive2://localhost:10000
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.24.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.24.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+2026-04-20T07:48:01.236204908Z main WARN The use of package scanning to locate Log4j plugins is deprecated.
+Please remove the `packages` attribute from your configuration file.
+See https://logging.apache.org/log4j/2.x/faq.html#package-scanning for details.
+2026-04-20T07:48:01.302440581Z main INFO Starting configuration org.apache.logging.log4j.core.config.properties.PropertiesConfiguration@436c81a3...
+2026-04-20T07:48:01.302564261Z main INFO Start watching for changes to jar:file:/opt/hive/lib/hive-beeline-4.1.0.jar!/beeline-log4j2.properties every 0 seconds
+2026-04-20T07:48:01.302667493Z main INFO Configuration org.apache.logging.log4j.core.config.properties.PropertiesConfiguration@436c81a3 started.
+2026-04-20T07:48:01.303756394Z main INFO Stopping configuration org.apache.logging.log4j.core.config.DefaultConfiguration@2df9b86...
+2026-04-20T07:48:01.303950696Z main INFO Configuration org.apache.logging.log4j.core.config.DefaultConfiguration@2df9b86 stopped.
+Connecting to jdbc:hive2://localhost:10000
+Connected to: Apache Hive (version 4.1.0)
+Driver: Hive JDBC (version 4.1.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+Beeline version 4.1.0 by Apache Hive
+0: jdbc:hive2://localhost:10000> show databases;
+INFO  : Compiling command(queryId=hive_20260420074808_86e66971-04b5-4ccd-aa39-f8df93017a4b): show databases
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:database_name, type:string, comment:from deserializer)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20260420074808_86e66971-04b5-4ccd-aa39-f8df93017a4b); Time taken: 0.501 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20260420074808_86e66971-04b5-4ccd-aa39-f8df93017a4b): show databases
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20260420074808_86e66971-04b5-4ccd-aa39-f8df93017a4b); Time taken: 0.045 seconds
++----------------+
+| database_name  |
++----------------+
+| default        |
++----------------+
+1 row selected (0.754 seconds)
+0: jdbc:hive2://localhost:10000> 
+```
 
-- 了解不同领域的业务分析指标 
-- 深化数据处理、数据分析、数据可视化能力
-- 增加大数据批处理、流处理的实践经验
-- 增加数据挖掘的实践经验
+## Technical Stack
 
-## tip
+> NameNode + DataNode + Hive Metastore + HiveServer2 + Beeline JDBC + Hive SQL
 
-- 项目主要使用的编程语言是 python、sql、hql
-- .ipynb 可以用 jupyter notebook 打开，如何安装, 可以参考 [jupyter notebook](http://blog.turboway.top/article/jupyter/)
->jupyter notebook 是一种网页交互形式的 python 编辑器，直接通过 pip 安装，也支持 markdown，很适合用来做数据分析可视化以及写文章、写示例代码等。
-
-## list
+```bash
+# NameNode UI
+http://localhost:9870
+```
 
 | 主题 | 处理方式 | 技术栈  |  数据集下载 |
 | ------------ | ------------ | ------------ | ------------ |
-| [1 亿条淘宝用户行为数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/UserBehaviorFromTaobao_Batch/用户行为数据分析.md)       |  离线处理  | 清洗 hive  + 分析 hive + 可视化 echarts | [阿里云](https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1) 或者 [百度网盘](https://pan.baidu.com/s/15Ss-nDMA120EHhuwpzYm0g) 提取码：5ipq |
-| [1000 万条淘宝用户行为数据实时分析](https://github.com/TurboWay/bigdata_analyse/blob/main/UserBehaviorFromTaobao_Stream/用户行为数据实时分析.md)       |  实时处理  | 数据源 kafka  + 实时分析 flink + 可视化（es + kibana）  | [百度网盘](https://pan.baidu.com/s/1CPD5jpmvOUvg1LETAVETGw)  提取码：m4mc|
-| [300 万条《野蛮时代》的玩家数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/AgeOfBarbarians/野蛮时代数据分析.md)       |  离线处理  | 清洗 pandas  + 分析 mysql + 可视化 pyecharts | [百度网盘](https://pan.baidu.com/s/1Mi5lvGDF405Nk8Y2BZDzdQ) 提取码：paq4 |
-| [130 万条深圳通刷卡数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/SZTcard/深圳通刷卡数据分析.md)       |  离线处理  | 清洗 pandas  + 分析 impala + 可视化 dbeaver | [百度网盘](https://pan.baidu.com/s/1WslwKXKhVH1q_6u4SvuKkQ) 提取码：t561 |
-| [10 万条厦门招聘数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/AmoyJob/2021厦门招聘数据分析.md)       |  离线处理  | 清洗 pandas  + 分析 hive + 可视化 ( hue + pyecharts ) + 预测 sklearn | [百度网盘](https://pan.baidu.com/s/1mco8dKb5o0qPd2kqsj7bNg) 提取码：9wx0|
-| [7000 条租房数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/RentFromDanke/租房数据分析.md)       |  离线处理  | 清洗 pandas  + 分析 sqlite + 可视化 matplotlib  | [百度网盘](https://pan.baidu.com/s/1l1x5qurJdkyUxAuhknj_Qw) 提取码：9en3 |
-| [6000 条倒闭企业数据分析](https://nbviewer.jupyter.org/github/TurboWay/bigdata_analyse/blob/main/DeathCompany/倒闭企业数据分析.ipynb)       |  离线处理  | 清洗 pandas  + 分析 pandas + 可视化 (jupyter notebook + pyecharts) | [百度网盘](https://pan.baidu.com/s/1I6E6i4ZadxE9IlVPe3Bqwg) 提取码：xvgm |
-| [COVID-19 疫情数据分析](https://nbviewer.jupyter.org/github/TurboWay/bigdata_analyse/blob/main/COVID-19/新冠疫情数据分析.ipynb)       |  离线处理  | 清洗 pandas  + 分析 pandas + 可视化 (jupyter notebook + pyecharts) | [COVID-19](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series) 或者 [百度网盘](https://pan.baidu.com/s/1b45MqPwjEWPoTOuEXquVcw) 提取码：wgmg |
-| [7 万条天猫订单数据分析](https://nbviewer.jupyter.org/github/TurboWay/bigdata_analyse/blob/main/OrderFromTmall/电商订单分析.ipynb)       |  离线处理  | 清洗 pandas  + 分析 pandas + 可视化 (jupyter notebook + pyecharts) | [百度网盘](https://pan.baidu.com/s/1psK07rkNU0_OdOXG4u1VDw) 提取码：27nr |
-
-## refer
-
-> 1. [https://tianchi.aliyun.com/dataset/](https://tianchi.aliyun.com/dataset/)
-> 2. [https://opendata.sz.gov.cn/data/api/toApiDetails/29200_00403601](https://opendata.sz.gov.cn/data/api/toApiDetails/29200_00403601)
-> 3. [https://www.kesci.com/home/dataset](https://www.kesci.com/home/dataset)
-> 4. [https://github.com/CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19)
+| [1 亿条淘宝用户行为数据分析](https://github.com/TurboWay/bigdata_analyse/blob/main/UserBehaviorFromTaobao_Batch/用户行为数据分析.md)       |  离线处理  | 清洗 hive  + 分析 hive + 可视化 echarts | [阿里云](https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1) |
