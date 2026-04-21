@@ -154,7 +154,7 @@ class HiveData:
 
     @property
     def echarts3_1(self):
-        return {'title': self.echarts3_1_data['title'], 'xAxis': self.echarts3_1_data['xAxis'], 'data': self.echarts3_1_data['data']}
+        return {'title': self.echarts3_1_data['title'], 'xAxis': self.echarts3_1_data['xAxis'], 'data': [d['value'] for d in self.echarts3_1_data['data']]}
 
     @property
     def echarts3_2(self):
