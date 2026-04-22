@@ -68,7 +68,8 @@ namenode      bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh 
 ## 2. Check Hive Server Beeline
 
 ```bash
-docker exec -it hiveserver2 bash
+# docker exec -it hiveserver2 bash
+docker exec -it hiveserver2 beeline -u jdbc:hive2://localhost:10000
 show databases;
 show tables;
 ```
@@ -84,6 +85,12 @@ show tables;
 ## 1. Copy Data to Hive Volume
 ```bash
 docker cp /home/yuki/Code/BigData/bigdata_analyse/UserBehavior.csv hiveserver2:/tmp/UserBehavior.csv
+
+# remove data
+docker exec hiveserver2 ls -la /tmp/UserBehavior.csv
+-rwxr-xr-x 1 hive hive 3672347465 May 10  2018 /tmp/UserBehavior.csv
+docker exec hiveserver2 rm /tmp/UserBehavior.csv
+
 ```
 
 ## 2. In Volume run beeline
